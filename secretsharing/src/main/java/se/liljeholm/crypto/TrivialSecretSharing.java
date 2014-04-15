@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.concurrent.ThreadSafe;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
@@ -12,8 +13,9 @@ import javax.crypto.SecretKey;
  * @since 28 feb 2014 12:07:26
  *
  */
+@ThreadSafe
 public class TrivialSecretSharing implements SecretSharing {
-	private int participants;
+	private final int participants;
 
 	public TrivialSecretSharing(int participants) {
 		this.participants = participants;
@@ -52,13 +54,10 @@ public class TrivialSecretSharing implements SecretSharing {
 
 	@Override
 	public byte[] assemble(List<Share> shares) {
-		byte[] secret = null;
-		for (Share share : shares) {
-			if (secret == null) {
-				secret = share.getKey();
-			} else {
-				secret = xor(secret, share.getKey());
-			}
+		Share share = shares.get(0);
+		byte[] secret = share.getKey();
+		for (int i = 1; i < shares.size(); i++) {
+			secret = xor(secret, shares.get(i).getKey());
 		}
 		return secret;
 	}

@@ -1,6 +1,5 @@
 package se.liljeholm.crypto;
 
-import java.util.Arrays;
 
 /**
  * @author torbjorn
@@ -8,13 +7,13 @@ import java.util.Arrays;
  * 
  */
 public class Share {
-	private final int share;
-	private final byte[] key;
+	private int share;
+	private byte[] key;
 
 	public Share(int share, byte[] key) {
 		super();
 		this.share = share;
-		this.key = Arrays.copyOf(key, key.length);
+		this.key = key;
 	}
 
 	public int getShare() {
@@ -22,6 +21,6 @@ public class Share {
 	}
 
 	public byte[] getKey() {
-		return Arrays.copyOf(key, key.length);
+		return key;
 	}
 }
